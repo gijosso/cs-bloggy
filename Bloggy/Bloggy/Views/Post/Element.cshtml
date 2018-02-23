@@ -1,0 +1,78 @@
+﻿@using Resources;
+@model Bloggy.Models.Element
+
+@{
+    ViewBag.Title = @Resources.StringResource.Element;
+}
+
+<h2>@Resources.StringResource.Element</h2>
+
+
+@using (Html.BeginForm("Element", "Post", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@Resources.StringResource.Element</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.article_id)
+        
+        @Html.HiddenFor(model => model.type)
+        
+        @Html.HiddenFor(model => model.link)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.index, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.index, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.index, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @if (Model.type == 1)
+        {
+            <div class="form-group">
+                <div name="doc" id="doc">
+                    @Html.HiddenFor(model => model.link)
+                    <div class="control-label col-md-2">
+                        <label>Banner for your article</label>
+                        <br />
+                        Actual : <img src="@Html.DisplayFor(model => model.link)" height="100" width="100" alt="No Image" />
+                    </div>
+                    <div id="files" class="col-md-10">
+                        <input type="file" id="file"
+                               name="file" style="float: left;" class="btn btn-default" />
+                        <br />
+                        <span id="spnFile" style="float: left; color: #FF0000"></span>
+                        @Html.ValidationMessage("File")
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value=@Resources.StringResource.Edit class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink(@Resources.StringResource.BackToList, "Article/" + @Model.article_id)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

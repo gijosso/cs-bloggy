@@ -1,0 +1,148 @@
+﻿@using Resources;
+@model Bloggy.Models.ArticleViewModel
+
+@{
+    ViewBag.Title = @Resources.StringResource.Article;
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Translator"))
+{
+
+    <h2>@Resources.StringResource.EditArticle</h2>
+
+    using (Html.BeginForm("Article", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>@Resources.StringResource.Article</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Article.id)
+            @Html.HiddenFor(model => model.Article.lang)
+            @Html.HiddenFor(model => model.Article.post_id)
+            @Html.HiddenFor(model => model.Article.user_id)
+            @Html.HiddenFor(model => model.Article.views)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Article.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Article.name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Article.name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div name="doc" id="doc">
+                    @Html.HiddenFor(model => model.Article.banner)
+                    <div class="labelstyle">
+                        <label>Banner for your article</label>
+                        <br/>
+                        Actual : <img src="@Html.DisplayFor(model => model.Article.banner)" height="50" width="50" alt="No Image"/>
+                    </div>
+                    <div id="files" class="col-md-10">
+                        <input type="file" id="file"
+                               name="file" style="float: left;" class="btn btn-default" />
+                        <br/>
+                        <span id="spnFile" style="float: left; color: #FF0000"></span>
+                        @Html.ValidationMessage("File")
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Article.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Article.description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Article.description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Views : @Model.Article.views
+                </div>
+            </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Article.validated, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Article.validated)
+                            @Html.ValidationMessageFor(model => model.Article.validated, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value=@Resources.StringResource.Edit class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <table class="table">
+        <tr>
+            <th>
+                @Resources.StringResource.Index
+            </th>
+            <th>
+                @Resources.StringResource.Type
+            </th>
+            <th></th>
+        </tr>
+
+        @if (!Model.Elements.Any())
+        {
+            <tr>
+                <td>
+                    @Resources.StringResource.NoElement
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model.Elements)
+            {
+                <tr>
+                    <td>
+                        @item.index
+                    </td>
+                        @switch (@item.type)
+                        {
+                            case 0:
+                                <td>@Resources.StringResource.Paragraph</td>
+                                break;
+                            case 1:
+                                <td>@Resources.StringResource.Image</td>
+                                break;
+                            case 2:
+                                <td>@Resources.StringResource.Document</td>
+                                break;
+                            default:
+                                break;
+                        }
+                    <td>
+                        @Html.ActionLink(@Resources.StringResource.Edit, "Element/" + @item.id) |
+                        @Html.ActionLink(@Resources.StringResource.Delete, "DeleteElement/" + @item.id)
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+
+    <div>
+        @Html.ActionLink(@Resources.StringResource.AddElement, "AddElement/" + Model.Article.id)
+    </div>
+
+    <div>
+        @Html.ActionLink(@Resources.StringResource.BackToList, "Edit/" + Model.Article.post_id)
+    </div>
+}

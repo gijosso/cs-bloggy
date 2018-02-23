@@ -1,0 +1,83 @@
+﻿@using Resources;
+@model Bloggy.Models.PostViewModel
+
+@{
+    ViewBag.Title = @Resources.StringResource.Edit + ' ' + @Resources.StringResource.Post;
+}
+
+<h2>@Resources.StringResource.Edit @Resources.StringResource.Post @Model.Post.name</h2>
+
+@using (Html.BeginForm("Edit", "Post", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>@Resources.StringResource.Edit @Resources.StringResource.Post</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Post.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Post.name, new { htmlAttributes = new { @class = "form-control", @placeholder = Model.Post.name } })
+                @Html.ValidationMessageFor(model => model.Post.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        @Html.HiddenFor(model => model.Post.id, new { htmlAttributes = new { @class = "form-control" } })
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value=@Resources.StringResource.Edit class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Resources.StringResource.Name
+        </th>
+        <th>
+            @Resources.StringResource.LanguageCode
+        </th>
+        <th></th>
+    </tr>
+
+    @if (!Model.Articles.Any())
+    {
+        <tr>
+            <td>
+                @Resources.StringResource.NoArticle
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model.Articles)
+        {
+            <tr>
+                <td>
+                    @item.name
+                </td>
+                <td>
+                    @item.lang
+                </td>
+                <td>
+                    @Html.ActionLink(@Resources.StringResource.Edit, "Article/" + @item.id) |
+                    @Html.ActionLink(@Resources.StringResource.Delete, "DeleteArticle/" + @item.id)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<div>
+    @Html.ActionLink(@Resources.StringResource.AddArticle, "AddArticle/" + @Model.Post.id)
+</div>
+
+<div>
+    @Html.ActionLink(@Resources.StringResource.BackToList, "Index")
+</div>

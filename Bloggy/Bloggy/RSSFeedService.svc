@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Bloggy.RSSFeedService" CodeBehind="RSSFeedService.svc.cs" %>

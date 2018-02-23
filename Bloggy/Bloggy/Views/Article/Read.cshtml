@@ -1,0 +1,56 @@
+﻿@using Resources;
+@model Bloggy.Models.UserArticleViewModel
+
+@{
+    ViewBag.Title = @Resources.StringResource.Read;
+}
+
+<h2>Article</h2>
+
+<div>
+    <h4>@Model.Article.name</h4>
+    <div class="article-date">
+        <p>@Model.Article.date</p>
+    </div>
+    <div class="article-authpr">
+        @Model.Author.UserName
+    </div>
+    <div class="article-views">
+        @Model.Article.views
+    </div>
+    <hr />
+    <div class="article-banner">
+        <img src="@Model.Article.banner" alt="banner" />
+    </div>
+    <div class="article-description">
+        <p>@Model.Article.description</p>
+    </div>
+    @foreach (var item in Model.Elements)
+    {
+        switch (@item.type)
+        {
+            case 0:
+                <div class="article-element">
+                    <p>@item.description</p>
+                </div>
+                break;
+            case 1:
+                <div class="article-element">
+                    <img src="@item.link" alt="image"/>
+                    <p>@item.description</p>
+                </div>
+                break;
+            case 2:
+                <div class="article-element">
+                    <a href="@item.link" target="_blank">Link</a>
+                    <p>@item.description</p>
+                </div>
+                break;
+            default:
+                break;
+        }
+    }
+</div>
+<p>
+    @Html.ActionLink(@Resources.StringResource.BackToHome, "Index", "Home")
+</p>

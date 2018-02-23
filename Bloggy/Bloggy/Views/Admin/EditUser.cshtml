@@ -1,0 +1,70 @@
+﻿@using Resources;
+@model Bloggy.Models.AdminUserViewModel
+
+@{
+    ViewBag.Title = @Resources.StringResource.EditUser;
+}
+
+
+@{
+    var listItems = new List<SelectListItem>
+    {
+        new SelectListItem
+        {
+            Text = "User",
+            Value = "User",
+            Selected = Model.IdentityRole.Name == "User"
+        },
+        new SelectListItem
+        {
+            Text = "Translator",
+            Value = "Translator",
+            Selected = Model.IdentityRole.Name == "Translator"
+        },
+        new SelectListItem
+        {
+            Text = "Admin",
+            Value = "Admin",
+            Selected = Model.IdentityRole.Name == "Admin"
+
+        }
+    };
+}
+
+<h2>@Resources.StringResource.EditUser</h2>
+
+@using (Html.BeginForm("EditUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>AdminUserViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApplicationUser.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.ApplicationUser.Email, new { @class = "form-control", @placeholder = Model.ApplicationUser.Email})
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Role", new {@class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.IdentityRole.Name, listItems, new {@class = "form-control"})
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value=@Resources.StringResource.Edit class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink(@Resources.StringResource.BackToList, "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

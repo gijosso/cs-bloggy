@@ -1,0 +1,129 @@
+﻿@using Resources;
+@model Bloggy.Models.SearchViewModels
+
+@{
+    ViewBag.Title = @Resources.StringResource.Search;
+}
+
+<h2>@Resources.StringResource.SearchArticles</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@Resources.StringResource.Search</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder=@Model.Title} })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder=@Model.Description} })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", @placeholder=@Model.Author} })
+                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BeforePublishDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.BeforePublishDate)
+                    @Html.ValidationMessageFor(model => model.BeforePublishDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "form-control", @placeholder=Model.PublishDate} })
+                @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HasDocuments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.HasDocuments)
+                    @Html.ValidationMessageFor(model => model.HasDocuments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HasImages, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.HasImages)
+                    @Html.ValidationMessageFor(model => model.HasImages, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="form-group">
+            @Html.LabelFor(model => model.KeyWords, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.KeyWords, new { htmlAttributes = new { @class = "form-control", @placeholder=@Model.KeyWords} })
+                @Html.ValidationMessageFor(model => model.KeyWords, "", new { @class = "text-danger" })
+            </div>
+        </div>-->
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Resources.StringResource.Search" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Articles != null && Model.Articles.Any())
+{
+    <h2>Search Result</h2>
+
+    <table class="table">
+        <tr>
+            <th>
+                Email
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Articles)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.name, "Read/" + item.id, "Article")
+                </td>
+                @if (User.IsInRole("Translator") || User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink(@Resources.StringResource.Edit, "Article/" + item.id, "Post")
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+<div>
+    @Html.ActionLink(@Resources.StringResource.BackToList, "Index", "Home")
+</div>

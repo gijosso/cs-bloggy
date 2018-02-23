@@ -1,0 +1,68 @@
+﻿@using System.Web.UI.WebControls
+@using Bloggy.Models
+@using Resources;
+@{
+    ViewBag.Title = @Resources.StringResource.AdministrationPanel;
+}
+
+<h2>@Resources.StringResource.UserRoleManagement</h2>
+
+@model Bloggy.Models.AdminViewModels
+<table class="table">
+    <tr>
+        <th>
+            @Resources.StringResource.Email
+        </th>
+        <th>
+            @Resources.StringResource.UserRole
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Users)
+    {
+        <tr>
+            <td>
+                @item.ApplicationUser.Email
+            </td>
+            <td>
+                @item.IdentityRole.Name
+            </td>
+            <td>
+                @Html.ActionLink(@Resources.StringResource.Edit, "EditUser/" + @item.ApplicationUser.Id) |
+                @Html.ActionLink(@Resources.StringResource.Delete, "DeleteUser/" + @item.ApplicationUser.Id)
+            </td>
+        </tr>
+    }
+</table>
+
+<table class="table">
+    <tr>
+        <th>
+            @Resources.StringResource.LanguageName
+        </th>
+        <th>@Resources.StringResource.LanguageCode</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.LangList)
+    {
+        <tr>
+            <td>
+                @item.name
+            </td>
+            <td>
+                @item.lang
+            </td>
+            <td>
+                @Html.ActionLink(@Resources.StringResource.Delete, "DeleteLang/" + @item.id)
+            </td>
+        </tr>
+    }
+</table>
+
+@Html.ActionLink(@Resources.StringResource.AddLanguage, "AddLanguage")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

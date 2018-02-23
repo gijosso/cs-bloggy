@@ -1,0 +1,50 @@
+﻿@using Resources;
+@using ViewRes
+@model Bloggy.Models.HomeViewModel
+
+@{
+    ViewBag.Title = StringResource.Title;
+}
+
+<div class="jumbotron">
+    <h2>@StringResource.SelectLanguage</h2>
+    <form method="post">
+        <select name="lang">
+            @foreach (var item in Model.LangList)
+            {
+                <option value="@item.lang" @(Culture == item.lang ? "selected=\"selected\"" : "")>@item.name</option>
+            }
+        </select>
+        <br>
+        <input type="submit" value="@StringResource.Submit" />
+    </form>
+</div>
+<h2>@Resources.StringResource.Posts</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Resources.StringResource.Banner
+        </th>
+        <th>
+            @Resources.StringResource.Name
+        </th>
+        <th>
+            @Resources.StringResource.Description
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Articles)
+    {
+        <tr>
+            <td>
+                <img src="@item.banner"  alt="banner" width="100"/>
+            </td>
+            <td>
+                @Html.ActionLink(@item.name, "Read/" + @item.id, "Article")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,41 @@
+﻿@using Resources;
+@model Bloggy.Models.Post
+
+@{
+    ViewBag.Title = @Resources.StringResource.Delete + ' ' + @Resources.StringResource.Post;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DeletePost</title>
+</head>
+<body>
+    <h3>@Resources.StringResource.DeletionCertain</h3>
+    <div>
+        <h4>@Resources.StringResource.Post</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.name)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm("DeletePost", "Post", FormMethod.Post, Model.id)) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value=@Resources.StringResource.Delete class="btn btn-default" /> |
+                @Html.ActionLink(@Resources.StringResource.BackToList, "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿@using Resources;
+@model Bloggy.Models.Element
+
+@{
+    ViewBag.Title = @Resources.StringResource.Delete + ' ' + @Resources.StringResource.Element;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DeleteElement</title>
+</head>
+<body>
+    <h3>@Resources.StringResource.DeletionCertain</h3>
+    <div>
+        <h4>@Resources.StringResource.Element</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.type)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.type)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.link)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.link)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.description)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.description)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.index)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.index)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm("DeleteElement", "Post", FormMethod.Post, Model.id)) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value=@Resources.StringResource.Delete class="btn btn-default" /> |
+                @Html.ActionLink(@Resources.StringResource.BackToList, "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

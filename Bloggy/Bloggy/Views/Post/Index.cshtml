@@ -1,0 +1,52 @@
+﻿@using Resources;
+@{
+    ViewBag.Title = @Resources.StringResource.Posts;
+}
+
+<h2>@Resources.StringResource.Posts</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Resources.StringResource.Name
+        </th>
+        <th></th>
+    </tr>
+
+    @model Bloggy.Models.PostsViewModel
+    @if (!Model.Posts.Any())
+    {
+        <tr>
+            <td>
+                @Resources.StringResource.NoPost
+            </td>
+            <td></td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model.Posts)
+        {
+            <tr>
+                <td>
+                    @item.name
+                </td>
+                <td>
+                    @Html.ActionLink(@Resources.StringResource.Edit, "Edit/" + @item.id) |
+                    @Html.ActionLink(@Resources.StringResource.Delete, "DeletePost/", new { id=@item.id })
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<p>
+    @Html.ActionLink(@Resources.StringResource.CreatePost, "Create")
+</p>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

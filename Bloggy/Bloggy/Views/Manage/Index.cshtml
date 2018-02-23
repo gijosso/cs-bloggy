@@ -1,0 +1,28 @@
+﻿@using Resources;
+@model Bloggy.Models.IndexViewModel
+@{
+    ViewBag.Title = @Resources.StringResource.Manage;
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>@Resources.StringResource.ChangeAccountSettings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Resources.StringResource.Password</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink(@Resources.StringResource.ChangePassword, "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink(@Resources.StringResource.Create, "SetPassword")
+            }
+            ]
+        </dd>
+    </dl>
+</div>

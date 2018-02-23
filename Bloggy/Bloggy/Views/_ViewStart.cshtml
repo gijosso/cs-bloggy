@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // wheather the user changed the language
+    if (!Request["lang"].IsEmpty())
+    {
+        // update culture with user's choice
+        Culture = UICulture = Request["lang"];
+        // save culture within session
+        Session["Culture"] = Request["lang"];
+    }
+    // check wheather session object is ready
+    else if (Session != null)
+    {
+        // get culture value from session if it exists, null otherwise
+        String sessionCulture = (String) Session["Culture"];
+        if (sessionCulture != null)
+        {
+            // set culture with corresponding value from session
+            Culture = UICulture = (String) Session["Culture"];
+        }
+    }
+}
